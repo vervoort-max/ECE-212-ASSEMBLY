@@ -1,7 +1,9 @@
+.syntax unified
+.thumb
 .text
-.global
+.global main
 
-start:
+main:
 LDR R0, =0x20001000
 LDR R1, [R0]
 LDR R2, [R0, #4]
