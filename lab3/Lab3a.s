@@ -7,11 +7,47 @@
 .extern getstring
 .syntax unified
 
+/* REMEBER I CHANGED ~/.BASHRC LINKER SO THIS WOULD COMPLILE ON MY LAPTOP */
+
+.data
+prompt:
+.string "Please Enter the Number of Entries: "
+
+welcome:
+.string "Welcome to ECE 212 Bubble Sorting Program\n"
+
+upper:
+.string "Please Enter the Upper Limit: "
+
+lower:
+.string "Please Enter the Lower Limit: "
+
+num:
+.string "Please Enter a number: "
+
+last:
+.string "Please Enter the Last Number: "
+
 .text
 Welcomeprompt:
 /*-----------------Students write their subroutine here--------------------*/
 /* 									NAME: Jenna Vervoort   ID: 1850478                     */
+LDR r0, =welcome @ Loading in the welcome message
+BL printf				 @ Printing the welcome message
 
+LDR r0, =prompt  @ Storing the prompt
+BL printf        @ Printing the prompt
+BL cr						 @ Prompting for an input
+BL getstring		 @ Getting the value of the input
+LDR r1, =value   @ Loading the address of value into r1
+LDR r2, [r1]     @ Taking the value of r1 and putting it into r2
+
+LDR r0, =lower   @ Loading the lower prompt
+BL printf				 @ Printing the lower prompt
+BL cr						 @ Prompting for an input
+BL getstring		 @ Getting the value of the input
+LDR r1, =value	 @ Loading the address of value into r1
+LDR r3, [r1]     @ Loading the value of value into r3
 
 
 
