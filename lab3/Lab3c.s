@@ -11,18 +11,15 @@
 Display:
 /*-----------------Students write their subroutine here--------------------*/
 /* 						NAME: Jenna Vervoort   ID: 1850478													 */
-
-LDR r0, =0x20001000
-
-LDR r1, =type
+LDR r0, =type
 BL printf
 
-LDR r1, =numE
+LDR r0, =numE
 BL printf
 LDR r1, [r0]
 BL printf
 
-LDR r1, =sorted
+LDR r0, =sorted
 BL printf
 
 MOV r3, [r0]
@@ -37,7 +34,7 @@ BEQ done
 SUB r3, r3, #1
 
 done:
-LDR r1, =end
+LDR r0, =end
 BL printf
 
 /*-------Code ends here ---------------------*/

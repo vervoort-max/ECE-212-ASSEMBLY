@@ -18,7 +18,7 @@ Sort:
 
 
 done:
-LDR r1, =sortType
+LDR r0, =sortType
 BL printf
 
 /*-------Code ends here ---------------------*/
