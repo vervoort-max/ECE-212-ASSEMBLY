@@ -16,13 +16,13 @@ BL printf
 
 LDR r0, =numE
 BL printf
-LDR r1, [r0]
+LDR r0, r2
 BL printf
 
 LDR r0, =sorted
 BL printf
 
-MOV r3, [r0]
+MOV r3, r2
 B printLoop
 
 printLoop:

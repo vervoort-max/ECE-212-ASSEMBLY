@@ -73,7 +73,11 @@ BL printf        @ Printing the num prompt
 BL cr            @ Prompting for an input
 BL getstring     @ Getting the value of the input
 LDR r1, =value   @ Loading the address of value into r1
-LDR r4, [r1]     @ Loading the value of value into a register
+LDR r5, [r1]     @ Loading the value of value into a register
+CMP r5, r3
+BLT rangeError
+CMP r5, r4
+BGT rangeError
 
 SUB r6, r6, #1   @ Counting down the entries
 B loop
