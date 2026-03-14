@@ -66,8 +66,8 @@ BL printf
 B limits
 
 loop:
-CMP r6, #1
-BEQ lastNum
+CMP r6, #1			 @ Checking if it's the last entry
+BEQ lastNum			 @ Branching to the lastNum prompt
 
 BL printf        @ Printing the num prompt
 BL cr            @ Prompting for an input
