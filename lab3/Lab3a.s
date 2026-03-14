@@ -7,57 +7,56 @@
 .extern getstring
 .syntax unified
 
-/* REMEBER I CHANGED ~/.BASHRC LINKER SO THIS WOULD COMPLILE ON MY LAPTOP */
-
 .text
 Welcomeprompt:
 /*-----------------Students write their subroutine here--------------------*/
 /* 									NAME: Jenna Vervoort   ID: 1850478                     */
 
+MOV r8, r0			 @ This is the base memory
+MOV r9, #0			 @ This will be the index
+
 LDR r0, =welcome @ Loading in the welcome message
 BL printf				 @ Printing the welcome message
-B numEntry			 @ Going to the prompt for number of entries
 LDR r0, =prompt  @ Storing the prompt
+B numEntry			 @ Going to the prompt for number of entries
 
 numEntry:
 BL printf        @ Printing the prompt
-BL cr						 @ Prompting for an input
-BL getstring		 @ Getting the value of the input
-LDR r1, =value   @ Loading the address of value into r1
-LDR r2, [r1]     @ Taking the value of r1 and putting it into r2
+BL cr						 @ Moving to the next line
+BL getstring		 @ Getting input
+MOV r2, r0
 
 CMP r2, #3       @ This checks if the number of entries is less than 3
-BLT entryErrorL
-CMP r2, #10
-BGT entryErrorH
-B limits
+BLT entryErrorL	 @ Branching to lower error
+CMP r2, #10      @ This checks if the number of entries is more than 10
+BGT entryErrorH	 @ Branching to higher error
+B limits				 @ Branching to the next prompt
 
 entryErrorL:
-LDR r0, =errorMore
+LDR r0, =errorM
 B numEntry
 
 entryErrorH:
-LDR r0, =errorLess
+LDR r0, =errorL
 B numEntry
 
 limits:
 LDR r0, =lower
 BL printf				 @ Printing the lower prompt
-BL cr						 @ Prompting for an input
-BL getstring		 @ Getting the value of the input
-LDR r1, =value	 @ Loading the address of value into r1
-LDR r3, [r1]     @ Loading the lower limit into r3
+BL cr						 @ Moving to the next line
+BL getstring		 @ Getting input
+MOV r3, r0
 
 LDR r0, =upper   @ Loading the upper prompt
 BL printf        @ Printing the upper prompt
-BL cr            @ Prompting for an input
-BL getstring     @ Getting the value of the input
-LDR r1, =value   @ Loading the address of value into r1
-LDR r4, [r1]     @ Loading the upper limit into r4
+BL cr            @ Moving to the next line
+BL getstring     @ Getting input
+MOV r4, r0
 
 CMP r3, r4
 BGT limitsError
 MOV r6, r2
+LDR r0, =num
 B loop
 
 limitsError:
@@ -69,34 +68,53 @@ loop:
 CMP r6, #1			 @ Checking if it's the last entry
 BEQ lastNum			 @ Branching to the lastNum prompt
 
+LDR r0, =num
 BL printf        @ Printing the num prompt
 BL cr            @ Prompting for an input
 BL getstring     @ Getting the value of the input
-LDR r1, =value   @ Loading the address of value into r1
-LDR r5, [r1]     @ Loading the value of value into a register
+MOV r5, r0
+
 CMP r5, r3
 BLT rangeError
 CMP r5, r4
 BGT rangeError
 
-SUB r6, r6, #1   @ Counting down the entries
-B loop
+ADD r1, r8, r9, LSL #2   @ r1 = base + index*4
+STR r5, [r1]             @ Storing the number
+ADD r9, r9, #1           @ index++
+
+SUB r6, r6, #1    @ Counting down the entries
+B loop					  @ Looping
 
 rangeError:
-LDR r0, =outRange
-BL printf
+LDR r0, =outRange	@ Loading the error message
+BL printf					@ Printing the error message
+B loop						@ Going back to loop
 
 lastNum:
-LDR r0, =last   @ Loading the last number prompt
-BL printf
-BL cr
-BL getstring
-LDR r1, =value
+LDR r0, =last    @ Loading the last number prompt
+BL printf				 @ Printing the last number prompt
+BL cr						 @ Moving to the next line
+BL getstring		 @ Getting input
+MOV r5, r0			 @ Putting the input in r5
+
+CMP r5, r3			 @ Checking if the number is above the lower limit
+BLT lastError    @ Going to error message
+CMP r5, r4			 @ Checking if the number is below the upper limit
+BGT lastError		 @ Going to the error message
+
+ADD r1, r8, r9, LSL #2
+STR r5, [r1]
+B done  				 @ end
+
+lastError:
+LDR r0, =outRange	@ Loading the error message
+BL printf					@ Printing the error message
+B lastNum					@ Going back to the lastNum
 
 done:
 
-/*-------Code ends here ---------------------*/
-
+/*---------------- Code ends here ----------------------------------*/
 /*-----------------Add your strings here in the data section--------*/
 .data
 prompt:
@@ -117,10 +135,10 @@ num:
 last:
 .string "Please Enter the Last Number Followed by 'enter': "
 
-errorMore:
+errorM:
 .string "Invalid Entry. Please Enter More than 2 Entry: "
 
-errorLess:
+errorL:
 .string "Invalid Entry. Please Enter Less than 11 Entry: "
 
 limError:
