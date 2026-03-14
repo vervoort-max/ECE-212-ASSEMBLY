@@ -14,35 +14,59 @@ Welcomeprompt:
 /*-----------------Students write their subroutine here--------------------*/
 /* 									NAME: Jenna Vervoort   ID: 1850478                     */
 
-start:
 LDR r0, =welcome @ Loading in the welcome message
 BL printf				 @ Printing the welcome message
-
+B numEntry			 @ Going to the prompt for number of entries
 LDR r0, =prompt  @ Storing the prompt
+
+numEntry:
 BL printf        @ Printing the prompt
 BL cr						 @ Prompting for an input
 BL getstring		 @ Getting the value of the input
 LDR r1, =value   @ Loading the address of value into r1
 LDR r2, [r1]     @ Taking the value of r1 and putting it into r2
 
-LDR r0, =lower   @ Loading the lower prompt
+CMP r2, #3       @ This checks if the number of entries is less than 3
+BLT entryErrorL
+CMP r2, #10
+BGT entryErrorH
+B limits
+
+entryErrorL:
+LDR r0, =errorMore
+B numEntry
+
+entryErrorH:
+LDR r0, =errorLess
+B numEntry
+
+limits:
+LDR r0, =lower
 BL printf				 @ Printing the lower prompt
 BL cr						 @ Prompting for an input
 BL getstring		 @ Getting the value of the input
 LDR r1, =value	 @ Loading the address of value into r1
-LDR r3, [r1]     @ Loading the value of value into r3
+LDR r3, [r1]     @ Loading the lower limit into r3
 
 LDR r0, =upper   @ Loading the upper prompt
 BL printf        @ Printing the upper prompt
 BL cr            @ Prompting for an input
 BL getstring     @ Getting the value of the input
 LDR r1, =value   @ Loading the address of value into r1
-LDR r4, [r1]     @ Loading the value of value into r4
+LDR r4, [r1]     @ Loading the upper limit into r4
 
-LDR r0, =num   @ Loading the num prompt
+CMP r3, r4
+BGT limitsError
+MOV r6, r2
+B loop
+
+limitsError:
+LDR r0, =limError
+BL printf
+B limits
 
 loop:
-CMP r2, #1
+CMP r6, #1
 BEQ lastNum
 
 BL printf        @ Printing the num prompt
@@ -51,14 +75,21 @@ BL getstring     @ Getting the value of the input
 LDR r1, =value   @ Loading the address of value into r1
 LDR r4, [r1]     @ Loading the value of value into a register
 
+SUB r6, r6, #1   @ Counting down the entries
+B loop
 
-SUB r2, r2, #1
+rangeError:
+LDR r0, =outRange
+BL printf
 
 lastNum:
 LDR r0, =last   @ Loading the last number prompt
+BL printf
+BL cr
+BL getstring
+LDR r1, =value
 
 done:
-
 
 /*-------Code ends here ---------------------*/
 
@@ -77,10 +108,10 @@ lower:
 .string "Please Enter the Lower Limit: "
 
 num:
-.string "Please Enter a Number: "
+.string "Please Enter a Number Followed by 'enter': "
 
 last:
-.string "Please Enter the Last Number: "
+.string "Please Enter the Last Number Followed by 'enter': "
 
 errorMore:
 .string "Invalid Entry. Please Enter More than 2 Entry: "
