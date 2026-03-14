@@ -11,13 +11,16 @@
 Display:
 /*-----------------Students write their subroutine here--------------------*/
 /* 						NAME: Jenna Vervoort   ID: 1850478													 */
+
 LDR r0, =type
 BL printf
+BL cr
 
 LDR r0, =numE
 BL printf
 LDR r0, r2
 BL printf
+BL cr
 
 LDR r0, =sorted
 BL printf
@@ -28,8 +31,12 @@ B printLoop
 printLoop:
 CMP r3, #0
 BEQ done
-
-@print stuff here
+SUB r1, r2, r3
+LSL r1, r1, #2
+ADD r1, r5, r1
+LDR r0, [r1]
+BL printf
+BL cr
 
 SUB r3, r3, #1
 
@@ -38,7 +45,6 @@ LDR r0, =end
 BL printf
 
 /*-------Code ends here ---------------------*/
-
 /*-----------------Add your strings here in the data section--------*/
 .data
 type:
