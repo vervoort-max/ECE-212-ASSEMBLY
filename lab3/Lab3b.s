@@ -17,40 +17,14 @@ Sort:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+done:
+LDR r1, =sortType
+BL printf
 
 /*-------Code ends here ---------------------*/
 
 /*-----------------Add your strings here in the data section--------*/
 .data
 
+sortType:
+.string "The Numbers are Sorted with Bubblesort Algorithm"

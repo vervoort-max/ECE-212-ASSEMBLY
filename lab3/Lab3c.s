@@ -11,6 +11,7 @@
 Display:
 /*-----------------Students write their subroutine here--------------------*/
 /* 						NAME: Jenna Vervoort   ID: 1850478													 */
+
 LDR r0, =0x20001000
 
 LDR r1, =type
@@ -31,8 +32,7 @@ printLoop:
 CMP r3, #0
 BEQ done
 
-
-@print stuff here 
+@print stuff here
 
 SUB r3, r3, #1
 
