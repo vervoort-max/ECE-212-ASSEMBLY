@@ -105,14 +105,12 @@ BGT lastError		 @ Going to the error message
 
 ADD r1, r8, r9, LSL #2
 STR r5, [r1]
-B done  				 @ end
+BX LR  				 		@ Returning from the subroutine
 
 lastError:
 LDR r0, =outRange	@ Loading the error message
 BL printf					@ Printing the error message
 B lastNum					@ Going back to the lastNum
-
-done:
 
 /*---------------- Code ends here ----------------------------------*/
 /*-----------------Add your strings here in the data section--------*/

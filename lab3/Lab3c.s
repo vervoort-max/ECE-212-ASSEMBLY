@@ -43,6 +43,7 @@ SUB r3, r3, #1
 done:
 LDR r0, =end
 BL printf
+BX LR						@ Returning from the subroutine
 
 /*-------Code ends here ---------------------*/
 /*-----------------Add your strings here in the data section--------*/

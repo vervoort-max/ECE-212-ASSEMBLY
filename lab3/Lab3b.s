@@ -46,6 +46,7 @@ B outerLoop					@ Looping again
 done:
 LDR r0, =sortType	  @ Loading the bubble sort string
 BL printf						@ Printing the bubble string
+BX LR								@ Returning from the subroutine
 
 /*-------Code ends here ---------------------*/
 /*-----------------Add your strings here in the data section--------*/
