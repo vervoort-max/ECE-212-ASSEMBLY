@@ -33,15 +33,17 @@ BGT entryErrorH	 @ Branching to higher error
 B limits				 @ Branching to the next prompt
 
 entryErrorL:
-LDR r0, =errorM
-B numEntry
+LDR r0, =errorM		@ Loading the error message for if the entry number is too small
+B numEntry				@ Going back to the entry prompt
 
 entryErrorH:
-LDR r0, =errorL
-B numEntry
+LDR r0, =errorL		@ Loading the error message if the entry number is too big
+B numEntry				@ Going back to the entry prompt
+
+/* NEED TO ADD PUSH AND POP STUFF TO MAKE THIS WORK ?????? */
 
 limits:
-LDR r0, =lower
+LDR r0, =lower	 @ Loading the lower prompt
 BL printf				 @ Printing the lower prompt
 BL cr						 @ Moving to the next line
 BL getstring		 @ Getting input
@@ -51,13 +53,13 @@ LDR r0, =upper   @ Loading the upper prompt
 BL printf        @ Printing the upper prompt
 BL cr            @ Moving to the next line
 BL getstring     @ Getting input
-MOV r4, r0
+MOV r4, r0			 @ Putting the input in r4
 
-CMP r3, r4
-BGT limitsError
-MOV r6, r2
-LDR r0, =num
-B loop
+CMP r3, r4			 @ Checking if the lower limit is greater than the upper limit
+BGT limitsError	 @ Going to the error message
+MOV r6, r2			 @ Setting up the counter for the loop
+LDR r0, =num		 @ Loading the num prompt
+B loop					 @ Going to the num loop
 
 limitsError:
 LDR r0, =limError
@@ -70,9 +72,9 @@ BEQ lastNum			 @ Branching to the lastNum prompt
 
 LDR r0, =num
 BL printf        @ Printing the num prompt
-BL cr            @ Prompting for an input
-BL getstring     @ Getting the value of the input
-MOV r5, r0
+BL cr            @ Moving to the next line
+BL getstring     @ Getting the input
+MOV r5, r0			 @ Moving the input into r5
 
 CMP r5, r3
 BLT rangeError
